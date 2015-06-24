@@ -22,8 +22,11 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.osgi.web.context.support.OsgiBundleXmlWebApplicationContext;
 import org.springframework.web.context.ContextLoaderListener;
 
 /**
@@ -72,6 +75,9 @@ public final class SafeContextLoaderListener implements ServletContextListener {
 
     public void contextInitialized(final ServletContextEvent sce) {
         try {
+            BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
+            ServletContext ctx = sce.getServletContext();
+            ctx.setAttribute(OsgiBundleXmlWebApplicationContext.BUNDLE_CONTEXT_ATTRIBUTE, bundleContext);
             this.delegate.contextInitialized(sce);
         } catch (final Throwable t) {
             /*

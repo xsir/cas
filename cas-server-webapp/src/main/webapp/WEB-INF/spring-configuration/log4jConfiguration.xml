@@ -23,8 +23,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
     <description>
         Log4J initialization.  Configuration options are sourced from cas.properties.  This allows deployers to externalize
@@ -34,11 +34,11 @@
         Deployers should not have to edit this file.
     </description>
 
-    <bean id="log4jInitialization" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"
+    <!--<bean id="log4jInitialization" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"
         p:targetClass="org.springframework.util.Log4jConfigurer" p:targetMethod="initLogging" p:arguments-ref="arguments"/>
     
     <util:list id="arguments">
        <value>${log4j.config.location:classpath:log4j.xml}</value>
        <value>${log4j.refresh.interval:60000}</value>
-    </util:list>
+    </util:list>-->
 </beans>

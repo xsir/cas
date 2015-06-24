@@ -1,23 +1,17 @@
-<!--
-  ~ Licensed to Jasig under one or more contributor license
-  ~ agreements. See the NOTICE file distributed with this work
-  ~ for additional information regarding copyright ownership.
-  ~ Jasig licenses this file to you under the Apache License,
-  ~ Version 2.0 (the "License"); you may not use this file
-  ~ except in compliance with the License.  You may obtain a
-  ~ copy of the License at the following location:
-  ~
-  ~   http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing,
-  ~ software distributed under the License is distributed on an
-  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  ~ KIND, either express or implied.  See the License for the
-  ~ specific language governing permissions and limitations
-  ~ under the License.
-  -->
+<!-- ~ Licensed to Jasig under one or more contributor license ~ agreements. 
+  See the NOTICE file distributed with this work ~ for additional information 
+  regarding copyright ownership. ~ Jasig licenses this file to you under the 
+  Apache License, ~ Version 2.0 (the "License"); you may not use this file 
+  ~ except in compliance with the License. You may obtain a ~ copy of the License 
+  at the following location: ~ ~ http://www.apache.org/licenses/LICENSE-2.0 
+  ~ ~ Unless required by applicable law or agreed to in writing, ~ software 
+  distributed under the License is distributed on an ~ "AS IS" BASIS, WITHOUT 
+  WARRANTIES OR CONDITIONS OF ANY ~ KIND, either express or implied. See the 
+  License for the ~ specific language governing permissions and limitations 
+  ~ under the License. -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <groupId>org.jasig.cas</groupId>
     <artifactId>cas-server</artifactId>
@@ -31,13 +25,11 @@
     <bundle.symbolicName>cas-server-webapp</bundle.symbolicName>
     <bundle.namespace>org.jasig.cas</bundle.namespace>
     <bundle.import.packages>
-        org.springframework.osgi.web.context.support,
-        org.springframework.web.servlet.view,
-        org.springframework.web.servlet,
-        *;resolution:="optional"
+      org.apache.el;version="[6.0.0,8)";resolution:="optional",
+      *;resolution:="optional"
     </bundle.import.packages>
     <bundle.export.packages>
-        org.jasig.cas.*
+      org.jasig.cas.*
     </bundle.export.packages>
     <cs.dir>${project.parent.basedir}</cs.dir>
   </properties>
@@ -67,6 +59,12 @@
       <type>jar</type>
       <scope>runtime</scope>
     </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.core</artifactId>
+      <version>5.0.0</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -87,39 +85,10 @@
             <Bundle-Version>${project.version}</Bundle-Version>
             <Import-Package>${bundle.import.packages}</Import-Package>
             <Export-Package>${bundle.export.packages}</Export-Package>
-            <Bundle-Classpath>
-              .,
-              WEB-INF/classes,
-              WEB-INF/lib/activation-1.1.jar,
-              WEB-INF/lib/hibernate-validator-4.2.0.Final.jar,
-              WEB-INF/lib/perf4j-0.9.16-log4jonly.jar,
-              WEB-INF/lib/aspectjweaver-1.7.2.jar,
-              WEB-INF/lib/inspektr-audit-1.0.7.GA.jar,
-              WEB-INF/lib/person-directory-api-1.5.1.jar,
-              WEB-INF/lib/cas-server-core-4.0.0.jar,
-              WEB-INF/lib/inspektr-common-1.0.7.GA.jar,
-              WEB-INF/lib/person-directory-impl-1.5.1.jar,
-              WEB-INF/lib/cas-server-webapp-support-4.0.0.jar,
-              WEB-INF/lib/jaxb-api-2.2.jar,
-              WEB-INF/lib/quartz-1.6.1.jar,
-              WEB-INF/lib/commons-codec-1.7.jar,
-              WEB-INF/lib/jaxb-impl-2.2.jar,
-              WEB-INF/lib/slf4j-api-1.7.5.jar,
-              WEB-INF/lib/commons-collections-3.2.1.jar,
-              WEB-INF/lib/jcl-over-slf4j-1.7.5.jar,
-              WEB-INF/lib/slf4j-log4j12-1.7.5.jar,
-              WEB-INF/lib/commons-io-2.4.jar,
-              WEB-INF/lib/joda-time-2.2.jar,
-              WEB-INF/lib/standard-1.1.2.jar,
-              WEB-INF/lib/commons-jexl-1.1.jar,
-              WEB-INF/lib/jstl-1.1.2.jar,
-              WEB-INF/lib/stax-api-1.0-2.jar,
-              WEB-INF/lib/commons-lang-2.5.jar,
-              WEB-INF/lib/log4j-1.2.17.jar,
-              WEB-INF/lib/validation-api-1.0.0.GA.jar
-            </Bundle-Classpath>
+            <Bundle-ClassPath>.,WEB-INF/classes,{maven-dependencies}</Bundle-ClassPath>
             <Web-ContextPath>cas</Web-ContextPath>
-            <Embed-Dependency>*;artifactId=!org.osgi.compendium|spring-*;scope=compile;type=!pom;inline=true</Embed-Dependency>
+            <Embed-Dependency>*;artifactId=!*.osgi.*;scope=compile|runtime;type=!pom;inline=false</Embed-Dependency>
+            <Embed-Directory>WEB-INF/lib</Embed-Directory>
             <Embed-Transitive>true</Embed-Transitive>
             <_removeheaders>
               Include-Resource,

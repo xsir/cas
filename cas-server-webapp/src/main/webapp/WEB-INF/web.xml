@@ -107,6 +107,10 @@
       org.jasig.cas.web.init.SafeDispatcherServlet
     </servlet-class>
     <init-param>
+      <param-name>contextClass</param-name>
+      <param-value>org.springframework.osgi.web.context.support.OsgiBundleXmlWebApplicationContext</param-value>
+    </init-param>
+    <init-param>
       <param-name>publishContext</param-name>
       <param-value>false</param-value>
     </init-param>
