@@ -1,0 +1,68 @@
+commit 3d52914c719baae4b673fa9145ff115b1252c090
+Author: x00131759 <xujinchuan@huawei.com>
+Date:   Thu Jul 7 17:35:23 2016 +0800
+
+    Add script to support auto-generation of Bundle-NativeCode manifest
+    
+    Signed-off-by: xsir <xujinchuan@huawei.com>
+
+diff --git a/boringssl-static/pom.xml b/boringssl-static/pom.xml
+index 5c66a66..0b60b6b 100644
+--- a/boringssl-static/pom.xml
++++ b/boringssl-static/pom.xml
+@@ -373,6 +373,9 @@
+                   </supportedProjectTypes>
+                   <instructions>
+                     <Export-Package>org.apache.tomcat.jni.*</Export-Package>
++                    <Bundle-NativeCode>META-INF/native/libnetty-tcnative-osx-x86_64.jnilib;osname=osx;processor=x86_64,
++                                       META-INF/native/libnetty-tcnative-linux-x86_64.so;osname=linux;processor=x86_64,
++                                       META-INF/native/netty-tcnative-windows-x86_64.dll;osname=windows;processor=x86_64</Bundle-NativeCode>
+                   </instructions>
+                 </configuration>
+               </execution>
+diff --git a/pom.xml b/pom.xml
+index 829feb0..40b3848 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -200,6 +200,31 @@
+               </target>
+             </configuration>
+           </execution>
++  
++          <!-- Generate bnd bundle manifest. -->
++          <execution>
++            <id>native-manifest</id>
++            <phase>initialize</phase>
++            <goals>
++              <goal>run</goal>
++            </goals>
++            <configuration>
++              <exportAntProperties>true</exportAntProperties>
++              <target>
++                <condition property="tcnative.lib" value="libnetty-tcnative.so">
++                  <equals arg1="${os.detected.name}" arg2="linux" />
++                </condition>
++                <condition property="tcnative.lib" value="netty-tcnative.dll">
++                  <equals arg1="${os.detected.name}" arg2="windows" />
++                </condition>
++                <condition property="tcnative.lib" value="libnetty-tcnative.jnilib">
++                  <equals arg1="${os.detected.name}" arg2="osx" />
++                </condition>
++                <property name="tcnativeManifest" value="META-INF/native/${tcnative.lib}; osname=${os.detected.name}; processor=x86_64" />
++                <echo message="Bundle-NativeCode: ${tcnativeManifest}" />
++              </target>
++            </configuration>
++          </execution>
+         </executions>
+       </plugin>
+ 
+@@ -220,7 +245,8 @@
+               </supportedProjectTypes>
+               <instructions>
+                 <Export-Package>org.apache.tomcat.jni.*</Export-Package>
+-              </instructions>
++                <Bundle-NativeCode>${tcnativeManifest}</Bundle-NativeCode>
++             </instructions>
+             </configuration>
+           </execution>
+         </executions>
